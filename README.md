@@ -1,34 +1,34 @@
-# GymFuel-Stellar 🏋️⚡
+# GymFuel-Stellar
 
-A fitness-themed tip jar dApp built on Stellar blockchain for the White Belt Challenge.
+The World's First Decentralized Tipping Platform for Athletes. Built on the Stellar Blockchain to enable near-instant, low-fee micro-payments for fitness content creators and athletes.
 
 ## Features
 
-### 🔐 Wallet Integration
+###  Wallet Integration
 - **Freighter Wallet** connection with persistent sessions
 - Real-time balance display
 - Account activation detection (Friendbot integration)
 
-### 💸 Tip/Payment System
+###  Tip/Payment System
 - Quick tip buttons (1, 5, 10 XLM)
 - Stellar blockchain transactions with memos
 - Transaction status tracking (signing, submitting, confirmed)
 - Direct links to Stellar.Expert for verification
 - Secure environment variable configuration
 
-### 📊 Transaction History
+###  Transaction History
 - Real-time transaction feed ("Recent Gains")
 - Incoming/outgoing transaction indicators
 - Human-readable timestamps
 - Memo display
 - Last 10 transactions with auto-refresh
 
-### 📈 Dynamic Progress Tracking
+### Dynamic Progress Tracking
 - **Weekly Progress**: Tracks tips sent in last 7 days (target: 10/week)
 - Dynamic progress bar with percentage
 - Motivational messages based on progress
 
-### 📸 Workout Log
+###  Workout Log
 - Photo upload with FileReader API (base64 conversion)
 - 200-character workout notes
 - localStorage persistence (survives page refresh)
@@ -36,7 +36,7 @@ A fitness-themed tip jar dApp built on Stellar blockchain for the White Belt Cha
 - History gallery with delete functionality  
 - Responsive 2-column grid layout
 
-### 🎨 UI/UX
+###  UI/UX
 - Gym-themed dark mode with neon green accents
 - Glassmorphism effects
 - Smooth transitions and animations
@@ -227,14 +227,14 @@ Output in `dist/` directory.
 
 ## Security Best Practices
 
-✅ **Implemented**:
+ **Implemented**:
 - Environment variables for sensitive data
 - `.gitignore` protects `.env`
 - No private keys in code  
 - Optional chaining for safe data access
 - Input validation (file size, type)
 
-❌ **Never Do**:
+ **Never Do**:
 - Commit `.env` file
 - Store private keys in frontend
 - Trust user input without validation
