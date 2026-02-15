@@ -33,6 +33,11 @@ export const WalletProvider = ({ children }) => {
     const [txPending, setTxPending] = useState(false);
     const [lastTx, setLastTx] = useState(null);
 
+    // Transaction history state
+    const [transactionHistory, setTransactionHistory] = useState([]);
+    const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+    const [historyError, setHistoryError] = useState(null);
+
     // Check if Freighter is installed
     const isFreighterInstalled = async () => {
         try {
@@ -125,9 +130,10 @@ export const WalletProvider = ({ children }) => {
             setTxStatus('success');
             setLastTx(result);
 
-            // 4. Refresh balance after successful transaction
+            // 4. Refresh balance and history after successful transaction
             setTimeout(() => {
                 fetchBalance(publicKey);
+                fetchTransactionHistory(publicKey);
             }, 2000);
 
             return result;
@@ -146,6 +152,34 @@ export const WalletProvider = ({ children }) => {
     const clearTxStatus = () => {
         setTxStatus(null);
         setLastTx(null);
+    };
+
+    // Fetch Transaction History
+    const fetchTransactionHistory = async (key = publicKey) => {
+        if (!key) {
+            setTransactionHistory([]);
+            return;
+        }
+
+        setIsLoadingHistory(true);
+        setHistoryError(null);
+
+        try {
+            const history = await stellarService.fetchTransactionHistory(key, 10);
+            setTransactionHistory(history);
+        } catch (err) {
+            console.error('Error fetching transaction history:', err);
+            setHistoryError(err.message || 'Failed to fetch transaction history');
+            setTransactionHistory([]);
+        } finally {
+            setIsLoadingHistory(false);
+        }
+    };
+
+    // Refresh transaction history (manual)
+    const refreshHistory = async () => {
+        if (!publicKey) return;
+        await fetchTransactionHistory(publicKey);
     };
 
     // Connect Wallet Function
@@ -235,10 +269,11 @@ export const WalletProvider = ({ children }) => {
         checkExistingConnection();
     }, []);
 
-    // Auto-fetch balance when publicKey changes
+    // Auto-fetch balance and history when publicKey changes
     useEffect(() => {
         if (publicKey && isWalletConnected) {
             fetchBalance(publicKey);
+            fetchTransactionHistory(publicKey);
         }
     }, [publicKey]);
 
@@ -260,11 +295,15 @@ export const WalletProvider = ({ children }) => {
         txStatus,
         txPending,
         lastTx,
+        transactionHistory,
+        isLoadingHistory,
+        historyError,
         connectWallet,
         disconnectWallet,
         syncBalance,
         sendTip,
         clearTxStatus,
+        refreshHistory,
         truncateAddress,
     };
 

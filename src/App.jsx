@@ -6,6 +6,8 @@ import TipButtons from './components/TipButtons';
 import WeeklyProgress from './components/WeeklyProgress';
 import DailyPump from './components/DailyPump';
 import TransactionStatus from './components/TransactionStatus';
+import TransactionList from './components/TransactionList';
+import WorkoutLog from './components/WorkoutLog';
 import './index.css';
 
 function App() {
@@ -18,9 +20,10 @@ function App() {
                 <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {/* Left Column */}
-                        <div>
+                        <div className="space-y-6">
                             <PowerLevel />
                             <TipButtons />
+                            <WorkoutLog />
                             <WeeklyProgress />
 
                             {/* Welcome Section */}
@@ -47,8 +50,11 @@ function App() {
                         </div>
 
                         {/* Right Column */}
-                        <div>
-                            <DailyPump />
+                        <div className="space-y-6">
+                            <TransactionList />
+                            <div className="mt-6">
+                                <DailyPump />
+                            </div>
                         </div>
                     </div>
                 </main>

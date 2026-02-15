@@ -314,6 +314,102 @@ class StellarService {
         // Generic network error
         return new Error(error.message || 'Failed to submit transaction');
     }
+
+    /**
+     * Fetch Transaction History
+     * 
+     * Retrieves the most recent payment transactions for an account.
+     * Formats data for UI display with human-readable timestamps.
+     * 
+     * @param {string} publicKey - Stellar public key to fetch history for
+     * @param {number} limit - Number of transactions to retrieve (default: 10)
+     * @returns {Promise<Array>} Array of formatted transaction objects
+     * 
+     * @example
+     * const history = await stellarService.fetchTransactionHistory("GABC...", 10);
+     */
+    async fetchTransactionHistory(publicKey, limit = 10) {
+        try {
+            if (!publicKey || !publicKey.startsWith('G')) {
+                throw new Error('Invalid public key');
+            }
+
+            // Fetch payments for account
+            const paymentsResponse = await this.server
+                .payments()
+                .forAccount(publicKey)
+                .order('desc')
+                .limit(limit)
+                .call();
+
+            // Format each payment for UI
+            const formattedTransactions = await Promise.all(
+                paymentsResponse.records.map(async (payment) => {
+                    // Determine transaction direction
+                    const isIncoming = payment.to === publicKey;
+                    const isOutgoing = payment.from === publicKey;
+
+                    // Get transaction details for memo
+                    let memo = '';
+                    try {
+                        const txResponse = await payment.transaction();
+                        memo = txResponse.memo || '';
+                    } catch (err) {
+                        console.warn('Could not fetch transaction memo:', err);
+                    }
+
+                    return {
+                        id: payment.id,
+                        hash: payment.transaction_hash,
+                        type: payment.asset_type === 'native' ? 'XLM' : payment.asset_code,
+                        amount: payment.amount,
+                        direction: isIncoming ? 'incoming' : 'outgoing',
+                        from: payment.from,
+                        to: payment.to,
+                        memo: memo,
+                        timestamp: payment.created_at,
+                        date: new Date(payment.created_at),
+                    };
+                })
+            );
+
+            return formattedTransactions;
+
+        } catch (error) {
+            // Handle 404 (account not found or no transactions)
+            if (error.response && error.response.status === 404) {
+                return []; // No transactions yet
+            }
+
+            console.error('Error fetching transaction history:', error);
+            throw new Error(`Failed to fetch transaction history: ${error.message}`);
+        }
+    }
+
+    /**
+     * Format Time Ago
+     * 
+     * Converts a timestamp to human-readable "time ago" format.
+     * 
+     * @param {Date|string} date - Date object or ISO string
+     * @returns {string} Formatted time string (e.g., "2 mins ago")
+     */
+    formatTimeAgo(date) {
+        const now = new Date();
+        const then = typeof date === 'string' ? new Date(date) : date;
+        const diffMs = now - then;
+        const diffSecs = Math.floor(diffMs / 1000);
+        const diffMins = Math.floor(diffSecs / 60);
+        const diffHours = Math.floor(diffMins / 60);
+        const diffDays = Math.floor(diffHours / 24);
+
+        if (diffSecs < 60) return 'Just now';
+        if (diffMins < 60) return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
+        if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+        if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+
+        return then.toLocaleDateString();
+    }
 }
 
 // Export Singleton instance
