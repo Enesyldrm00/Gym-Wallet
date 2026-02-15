@@ -9,8 +9,9 @@
  */
 
 import * as StellarSdk from 'stellar-sdk';
+import { STELLAR_CONFIG, validateRecipientAddress } from '../config/config';
 
-// Stellar Network Configuration
+// Stellar Network Configuration (Legacy - kept for backward compatibility)
 const STELLAR_NETWORK = 'TESTNET';
 const HORIZON_URL = 'https://horizon-testnet.stellar.org';
 const FRIENDBOT_URL = 'https://friendbot.stellar.org';

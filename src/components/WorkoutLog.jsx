@@ -10,15 +10,22 @@ const WorkoutLog = () => {
 
     // Load logs from localStorage on mount
     useEffect(() => {
+        console.log('[WorkoutLog] Loading from localStorage...');
         const storedLogs = localStorage.getItem('gymfuel_workout_logs');
+        console.log('[WorkoutLog] Raw localStorage:', storedLogs);
+
         if (storedLogs) {
             try {
                 const parsed = JSON.parse(storedLogs);
+                console.log('[WorkoutLog] Parsed logs:', parsed);
+                console.log('[WorkoutLog] Number of logs:', parsed.length);
                 setWorkoutLogs(parsed);
             } catch (err) {
-                console.error('Error parsing workout logs:', err);
+                console.error('[WorkoutLog] Error parsing workout logs:', err);
                 setWorkoutLogs([]);
             }
+        } else {
+            console.log('[WorkoutLog] No logs found in localStorage');
         }
     }, []);
 
@@ -264,6 +271,11 @@ const WorkoutLog = () => {
                                         src={log.image}
                                         alt="Workout"
                                         className="w-full h-32 object-cover rounded-lg mb-3"
+                                        onError={(e) => {
+                                            console.error('[WorkoutLog] Image failed to load for log:', log.id);
+                                            e.target.style.display = 'none';
+                                            e.target.nextElementSibling.style.display = 'flex';
+                                        }}
                                     />
                                 ) : (
                                     <div className="w-full h-32 bg-gym-green/10 rounded-lg mb-3 flex items-center justify-center">
