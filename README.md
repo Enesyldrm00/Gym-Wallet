@@ -184,25 +184,31 @@ User Action → WalletContext → StellarService → Horizon API
 - [ ] Persistent connection (refresh page)
 
 **Transactions**:
-- [ ] Send 1 XLM tip
-- [ ] Send 5 XLM tip
-- [ ] Send 10 XLM tip
-- [ ] Check transaction on Stellar.Expert
-- [ ] Verify balance updates
+- [X] Send 1 XLM tip
+- [X]  Send 5 XLM tip
+- [X] Send 10 XLM tip
+- [X] Check transaction on Stellar.Expert
+- [X] Verify balance updates
 
 **Workout Log**:
-- [ ] Upload image (< 5MB)
-- [ ] Add workout note
-- [ ] Post update
-- [ ] View in history
-- [ ] Delete log
+- [X] Upload image (< 5MB)
+- [X] Add workout note
+- [X] Post update
+- [X] View in history
+- [X] Delete log
 
 **Progress**:
-- [ ] Send multiple tips, watch weekly progress update
-- [ ] Check tip counter in Daily Pump
-- [ ] Verify workout days counter
+- [X] Send multiple tips, watch weekly progress update
+- [X] Check tip counter in Daily Pump
+- [X] Verify workout days counter
 
-## Deployment
+## 📸 Project Showcase
+
+| Wallet & Balance | Successful Transaction | Daily Pump Stats |
+| :---: | :---: | :---: |
+| ![Wallet](./screenshots/transfer2.png) | ![Success](./screenshots/transfer.png) | ![Gains](./screenshots/transfer4.png) |
+
+> **Verification**: [View on Stellar.Expert](https://stellar.expert/explorer/testnet/tx/a773608000811bf85a37ea10b4dbdd1c715cc7ee4db5160d8fb95ffdcdd08483)
 
 ### Environment Variables (Production)
 
