@@ -18,6 +18,7 @@ const WorkoutLog = () => {
             try {
                 const parsed = JSON.parse(storedLogs);
                 console.log('[WorkoutLog] Parsed logs:', parsed);
+                console.log('DEBUG - Logs from Storage:', parsed); // DEBUG statement as requested
                 console.log('[WorkoutLog] Number of logs:', parsed.length);
                 setWorkoutLogs(parsed);
             } catch (err) {
@@ -47,9 +48,11 @@ const WorkoutLog = () => {
             return;
         }
 
-        // Validate file size (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-            alert('Image size should be less than 5MB');
+        // Validate file size (max 1MB to avoid localStorage quota issues)
+        const maxSize = 1 * 1024 * 1024; // 1MB limit
+        if (file.size > maxSize) {
+            alert('Image size should be less than 1MB to avoid storage issues. Please compress or resize your image.');
+            console.error('[WorkoutLog] File too large:', file.size, 'bytes (max:', maxSize, 'bytes)');
             return;
         }
 

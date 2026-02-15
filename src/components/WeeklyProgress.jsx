@@ -123,7 +123,11 @@ const WeeklyProgress = () => {
                     {weeklyStats.isOverdrive && (
                         <span className="text-xl animate-pulse">🔥</span>
                     )}
-                    <span className={`text-xs font-bold ${weeklyStats.isOverdrive ? 'text-yellow-400' : 'text-gray-500'}`}>
+                    {/* UNCAPPED COUNT DISPLAY - Shows actual tips (11, 20, 50+) */}
+                    <span className={`text-xs font-bold ${weeklyStats.isOverdrive
+                            ? 'text-yellow-400 animate-pulse' // Neon gold pulsing in overdrive
+                            : 'text-gray-500'
+                        }`}>
                         {weeklyStats.count} / {WEEKLY_TARGET}
                     </span>
                     {weeklyStats.isOverdrive && (
